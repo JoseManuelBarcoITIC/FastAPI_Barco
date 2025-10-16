@@ -1,50 +1,52 @@
 
 from fastapi import FastAPI
 
-listusers = [{"id":"1",
-         "name": "pepe",
-              "apellido": "gotera"},
-           {"id":"2",
-            "name": "manolo",
-            "apellido": "vargas"},
-             {
-                 "id":"3",
-                 "name": "maria",
-                 "apellido": "barca"
-             }]
+usersname = ["pepe","manolo"]
 app = FastAPI()
+@app.post("/api/users", response_model = dict)
+async def add_user( ):
+    new_user = "juani"
+    usersname.append(new_user)
+    id = range(len(usersname))
+    user_dict = dict(zip(id, usersname))
+    return user_dict
 
+@app.get("/api/users/{id}", response_model = dict)
+async def get_user(user_id: int):
+    id = range(len(usersname))
+    user_dict = dict(zip(id, usersname))
 
-@app.post("/api/users")
-async def add_user():
-    listusers.append({"id":"3","name": "pepe"})
-    return {"users" : listusers}
+    if user_id in user_dict:
+        return{
+            "id": user_id,
+            "name": user_dict[user_id]
+        }
 
-@app.get("/api/users/{id}")
-async def get_user(id: str):
-    for user in listusers:
-        if user["id"] == id:
-            return user
-@app.get("/api/users/")
-async def get_users_list():
-    return listusers
-@app.put("/api/users/{id}")
-async def put_update_user(id:str):
-    for index,user in enumerate(listusers):
-        if user["id"] == id:
-            listusers[index].update({"id":"4","name":"manoli","apellido":"garcia"})
-            return listusers[index]
-@app.patch("/api/users/{id}")
-async def update_user(id:str):
-    for index,user in enumerate(listusers):
-        if user["id"] == id:
-            listusers[index].update({"name":"manoli"})
-            return listusers[index]
+@app.get("/api/users", response_model = dict)
+async def get_user_list():
+    id = range(len(usersname))
+    user_dict = dict(zip(id, usersname))
+    return user_dict
 
-@app.delete("/api/users/{id}")
-async def delete_user(id:str):
-    for index,user in enumerate(listusers):
-        if user["id"] == id:
-            del listusers[index]
-            return listusers
+@app.put("/api/users", response_model = dict)
+def modify_user(user_id: int, new_name: str):
+    id = range(len(usersname))
+    user_dict = dict(zip(id, usersname))
+    if user_id in user_dict:
+        user_dict[user_id] = new_name
+        return user_dict
 
+@app.put("/api/users", response_model = dict)
+def modify_user(user_id: int, new_name: str):
+    id = range(len(usersname))
+    user_dict = dict(zip(id, usersname))
+    if user_id in user_dict:
+        user_dict[user_id] = new_name
+        return user_dict
+@app.delete("/api/users", response_model = dict)
+def delete_user(user_id: int):
+    id = range(len(usersname))
+    user_dict = dict(zip(id, usersname))
+    if user_id in user_dict:
+        user_dict.pop(user_id)
+        return user_dict
