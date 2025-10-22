@@ -1,41 +1,38 @@
+from dotenv import load_dotenv
+from fastapi import FastAPI,Depends
+from sqlalchemy import create_engine
+from sqlmodel import SQLModel, Field, Session
 
-from fastapi import FastAPI
+from FastAPI_Barco.models.User import User
+from models.Product import Product, ProductRequest
 
-usersname = ["pepe","manolo"]
+import os
+
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+engine = create_engine(DATABASE_URL)
+
+SQLModel.metadata.create_all(engine)
+
+def get_db():
+    db= Session(engine)
+    try:
+        yield db
+    finally:
+        db.close()
 app = FastAPI()
-@app.post("/api/users", response_model = dict)
-async def add_user( ):
-    new_user = "juani"
-    usersname.append(new_user)
-    id = range(len(usersname))
-    user_dict = dict(zip(id, usersname))
-    return user_dict
 
-@app.get("/api/users/{id}", response_model = dict)
-async def get_user(id: int):
-    user_id = range(len(usersname))
-    user_dict = dict(zip(user_id, usersname))
+@app.post("/product", response_model = dict, tags = ["CREATE"])
+def add_user(product: ProductRequest,db:Session = Depends(get_db)):
+    insert_product = Product.model_validate(product)
+    db.add(insert_product)
+    db.commit()
+    return {"msg":"Afegit usuari correctament"}
+@app.get("/user/{id}", response_model = dict, tags = ["READ BY ID"])
+def getUser(product: ProductRequest,db:Session = Depends(get_db)):
+    stmt = select(Product).where(Product.id == product.id)
+    result = db.exec(stmt).scalar()
+    print(result)
+    return UserResponse.model_validate(result)
 
-    if id in user_dict:
-        return {id: user_dict[id]}
-
-@app.get("/api/users", response_model = dict)
-async def get_user_list():
-    id = range(len(usersname))
-    user_dict = dict(zip(id, usersname))
-    return user_dict
-
-@app.put("/api/users", response_model = dict)
-def modify_user(user_id: int, new_name: str):
-    id = range(len(usersname))
-    user_dict = dict(zip(id, usersname))
-    if user_id in user_dict:
-        user_dict[user_id] = new_name
-        return user_dict
-@app.delete("/api/users", response_model = dict)
-def delete_user(user_id: int):
-    id = range(len(usersname))
-    user_dict = dict(zip(id, usersname))
-    if user_id in user_dict:
-        user_dict.pop(user_id)
-        return user_dict
