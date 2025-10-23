@@ -16,9 +16,13 @@ class ProductRequest(SQLModel):
     category: str
 
 class ProductResponse(SQLModel):
-    id: int
     name: str
     description: str
     price: float
     quantity: int
     category: str
+
+class ProductResponsePartial(SQLModel):
+     name: str
+     description: str
+     price: float
