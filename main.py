@@ -28,7 +28,7 @@ def add_user(product: ProductRequest,db:Session = Depends(get_db)):
     db.commit()
     return {"msg":"Afegit producte correctament"}
 
-@app.get("/product/{id}", response_model=ProductResponse, tags = ["GETS"])
+@aspp.get("/product/{id}", response_model=ProductResponse, tags = ["GETS"])
 def Get_Product_By_Id(id:int ,db:Session = Depends(get_db)):
     stmt = select(Product).where(Product.id == id)
     result = db.exec(stmt).first()
