@@ -1,6 +1,4 @@
 # FastAPI_Barco
-
-# Activitat-RA3---PYTHON-
 ![Ejercicio 1 Peticion](images/Ejercicio1_Peticion.png)
 
 ![Ejercicio 1 Respuesta](images/Ejercicio1_Respuesta.png)
