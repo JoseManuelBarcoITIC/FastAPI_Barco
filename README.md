@@ -21,7 +21,7 @@
 
 ![Ejercicio 9 Peticion](images/Ejercicio9_Peticion.png)
 
-![Ejercicio 9 Respuesta](images/Ejercicio9_Repuesta.png)
+![Ejercicio 9 Respuesta](images/Ejercicio9_Respuesta.png)
 
 
 
