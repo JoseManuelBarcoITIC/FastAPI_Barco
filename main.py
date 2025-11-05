@@ -26,9 +26,9 @@ def add_user(product: ProductRequest,db:Session = Depends(get_db)):
     insert_product = Product.model_validate(product)
     db.add(insert_product)
     db.commit()
-    return {"msg":"Afegit producte correctament"}
+    return {"msg":"Afegit usuari correctament"}
 
-@aspp.get("/product/{id}", response_model=ProductResponse, tags = ["GETS"])
+@app.get("/product/{id}", response_model=ProductResponse, tags = ["GETS"])
 def Get_Product_By_Id(id:int ,db:Session = Depends(get_db)):
     stmt = select(Product).where(Product.id == id)
     result = db.exec(stmt).first()
@@ -55,7 +55,7 @@ def Delete_Product(id:int,db:Session = Depends(get_db)):
     stmt = delete(Product).where(Product.id == id)
     db.exec(stmt)
     db.commit()
-    return {"msg":"Producte eliminat correctament"}
+    return {"msg":"Usuari eliminat correctament"}
 
 @app.put("/products/put/{id}", response_model=dict, tags = ["UPDATES"])
 def Update_Product(id:int, product:ProductRequest,db:Session = Depends(get_db)):
@@ -67,7 +67,7 @@ def Update_Product(id:int, product:ProductRequest,db:Session = Depends(get_db)):
     )
     db.exec(stmt)
     db.commit()
-    return {"msg":"Producte modificat correctament"}
+    return {"msg":"Usuari modificat correctament"}
 
 @app.patch("/products/patch/price/{id}", response_model=dict, tags = ["UPDATES"])
 def Update_Price_Product(id:int,price: int,db:Session = Depends(get_db)):
@@ -78,7 +78,7 @@ def Update_Price_Product(id:int,price: int,db:Session = Depends(get_db)):
     )
     db.exec(stmt)
     db.commit()
-    return {"msg":"Preu del producte modificat correctament"}
+    return {"msg":"Usuari modificat correctament"}
 
 @app.patch("/products/patch/{id}", response_model=dict, tags = ["UPDATES"])
 def Update_Partial_Product(product_id:int,price: int,name:str,db:Session = Depends(get_db)):
@@ -89,4 +89,4 @@ def Update_Partial_Product(product_id:int,price: int,name:str,db:Session = Depen
     )
     db.exec(stmt)
     db.commit()
-    return {"msg":"Nom i preu del producte modificat correctament"}
+    return {"msg":"Usuari modificat correctament"}
